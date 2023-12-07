@@ -35,5 +35,8 @@ public class ButtonHandler implements ActionListener {
                 }
             }
         }
+        if (e.getSource()==gui.compressButton){
+            new StartFfmpeg(gui);
+        }
     }
 }
