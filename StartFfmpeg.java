@@ -1,5 +1,5 @@
-public class startFfmpeg {
-    public startFfmpeg() {
+public class StartFfmpeg {
+    public StartFfmpeg() {
         try {
             // comand to be executed
             String command = "ffmpeg -i input.mp4 -c:v libx264 -c:a aac output.mp4"
@@ -15,7 +15,4 @@ public class startFfmpeg {
             ex.printStacktrace();
         }
     }
-    public static void main (String[] args){
-    }
-
 }
