@@ -14,11 +14,14 @@ public class FfmpegGUI {
     JLabel pfadLabel;
     JFileChooser fileChooser;
     JTextField textField;
+    JProgressBar pbar;
 
     public FfmpegGUI() {
         frame = new JFrame("FFMPEG Interface");
 
         fileChooser = new JFileChooser();
+
+        pbar = new JProgressBar();
 
         // Panel
         pfadPanel = new JPanel(new BorderLayout());
@@ -34,7 +37,6 @@ public class FfmpegGUI {
         pfadLabel = new JLabel("Filepath: ");
 
         // Darstellung vom Pfad inkl. Button
-        
         pfadLabel.setLabelFor(textField);
         textField.setEditable(false);
         textField.setFont(new Font("Arial", Font.PLAIN, 18));
