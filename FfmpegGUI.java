@@ -4,20 +4,20 @@ import java.awt.*;
 
 public class FfmpegGUI {
 
-    JFrame frame;
-    JButton compressButton;
-    JButton cancelButton;
-    JButton browseButton;
+    private JFrame mainFrame;
+    private JButton compressButton;
+    private JButton cancelButton;
+    private JButton browseButton;
 
-    JPanel bottomPanel;
-    JPanel pfadPanel;
-    JLabel pfadLabel;
-    JFileChooser fileChooser;
-    JTextField textField;
-    JProgressBar pbar;
+    private JPanel bottomPanel;
+    private JPanel pfadPanel;
+    private JLabel pfadLabel;
+    private JFileChooser fileChooser;
+    private JTextField videoPath;
+    private JProgressBar pbar;
 
     public FfmpegGUI() {
-        frame = new JFrame("FFMPEG Interface");
+        mainFrame = new JFrame("FFMPEG Interface");
 
         fileChooser = new JFileChooser();
 
@@ -32,19 +32,19 @@ public class FfmpegGUI {
         cancelButton = new JButton("Close");
         compressButton = new JButton("Compress");
 
-        textField = new JTextField();
+        videoPath = new JTextField();
 
         pfadLabel = new JLabel("Filepath: ");
 
         // Darstellung vom Pfad inkl. Button
-        pfadLabel.setLabelFor(textField);
-        textField.setEditable(false);
-        textField.setFont(new Font("Arial", Font.PLAIN, 18));
+        pfadLabel.setLabelFor(videoPath);
+        videoPath.setEditable(false);
+        videoPath.setFont(new Font("Arial", Font.PLAIN, 18));
 
         pfadPanel.setPreferredSize(new Dimension(50,40));
         pfadPanel.add(pfadLabel, BorderLayout.WEST);
         pfadPanel.add(browseButton, BorderLayout.EAST);
-        pfadPanel.add(textField);
+        pfadPanel.add(videoPath);
         pfadPanel.setBorder(new EmptyBorder(5, 5, 5, 20));
 
         // Darstellung Cancel + Compress Button
@@ -57,11 +57,11 @@ public class FfmpegGUI {
 
 
 
-        frame.add(pfadPanel, BorderLayout.NORTH);
-        frame.add(bottomPanel, BorderLayout.SOUTH);
-        frame.setSize(1000, 500);
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.setVisible(true);
+        mainFrame.add(pfadPanel, BorderLayout.NORTH);
+        mainFrame.add(bottomPanel, BorderLayout.SOUTH);
+        mainFrame.setSize(1000, 500);
+        mainFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        mainFrame.setVisible(true);
 
         new ButtonHandler(this);
     }
@@ -70,5 +70,26 @@ public class FfmpegGUI {
         new FfmpegGUI();
     }
 
+    public JButton getCompressButton() {
+        return compressButton;
+    }
+
+    public JButton getCancelButton() {
+        return cancelButton;
+    }
+
+    public JButton getBrowseButton() {
+        return browseButton;
+    }
+
+    public JTextField getVideoPath() {
+        return videoPath;
+    }
+    public JFrame getMainframe(){
+        return mainFrame;
+    }
+    public JFileChooser getFileChooser(){
+        return fileChooser;
+    }
 }
 
