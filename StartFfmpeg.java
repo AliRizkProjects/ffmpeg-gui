@@ -16,7 +16,7 @@ public class StartFfmpeg extends SwingWorker<Void, String>{
         String videoOutputPath = gui.getOutputPath().getText(); 
 
         // comand to be executed
-        String command = "ffmpeg -i \"" + videoFilePath + "\" -vcodec libx264 -crf 28 \""+ videoOutputPath +"\"output.mp4\"";
+        String command = "ffmpeg -i \"" + videoFilePath + "\" -vcodec libx264 -crf 28 \""+ videoOutputPath +"\\output.mp4\"";
         System.out.println("Befehl: "+ command);
         // create and run process
         ProcessBuilder pb = new ProcessBuilder(command.split(" "));
