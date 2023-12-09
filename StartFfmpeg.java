@@ -2,9 +2,10 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import javax.swing.SwingWorker;
+
 public class StartFfmpeg extends SwingWorker<Void, String>{
     FfmpegGUI gui;
-
+    private String line;
     public StartFfmpeg(FfmpegGUI gui) {
         this.gui = gui;
     }
@@ -12,9 +13,10 @@ public class StartFfmpeg extends SwingWorker<Void, String>{
     protected Void doInBackground() throws Exception{
         
         String videoFilePath = gui.getVideoPath().getText();
+        String videoOutputPath = gui.getOutputPath().getText(); 
 
         // comand to be executed
-        String command = "ffmpeg -i \"" + videoFilePath + "\" -vcodec libx264 -crf 28 \"C:\\Users\\Ali\\Videos\\output.mp4\"";
+        String command = "ffmpeg -i \"" + videoFilePath + "\" -vcodec libx264 -crf 28 \""+ videoOutputPath +"\"output.mp4\"";
         System.out.println("Befehl: "+ command);
         // create and run process
         ProcessBuilder pb = new ProcessBuilder(command.split(" "));
@@ -23,9 +25,9 @@ public class StartFfmpeg extends SwingWorker<Void, String>{
             Process process = pb.start();
 
             BufferedReader reader = new BufferedReader(new InputStreamReader(process.getInputStream()));
-            String line;
             while ((line = reader.readLine()) != null){
                 System.out.println(line);
+                gui.getCmdArea().append(line);
             }
             int exitCode = process.waitFor();
             System.out.println("Exitcode: "+ exitCode);
