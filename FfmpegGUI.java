@@ -13,14 +13,11 @@ public class FfmpegGUI {
     private JLabel pfadLabel;
     private JFileChooser fileChooser;
     private JTextField videoPath;
-    private JProgressBar pbar;
 
     public FfmpegGUI() {
         mainFrame = new JFrame("FFMPEG Interface");
 
         fileChooser = new JFileChooser();
-
-        pbar = new JProgressBar();
 
         // Panel
         pfadPanel = new JPanel(new BorderLayout());
@@ -86,6 +83,7 @@ public class FfmpegGUI {
     public JFileChooser getFileChooser(){
         return fileChooser;
     }
+
     public static void main(String[] args) {
         new FfmpegGUI();
     }
