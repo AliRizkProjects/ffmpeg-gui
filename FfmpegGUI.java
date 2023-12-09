@@ -8,7 +8,6 @@ public class FfmpegGUI {
     private JButton compressButton;
     private JButton cancelButton;
     private JButton browseButton;
-
     private JPanel bottomPanel;
     private JPanel pfadPanel;
     private JLabel pfadLabel;
@@ -66,10 +65,6 @@ public class FfmpegGUI {
         new ButtonHandler(this);
     }
 
-    public static void main(String[] args) {
-        new FfmpegGUI();
-    }
-
     public JButton getCompressButton() {
         return compressButton;
     }
@@ -90,6 +85,9 @@ public class FfmpegGUI {
     }
     public JFileChooser getFileChooser(){
         return fileChooser;
+    }
+    public static void main(String[] args) {
+        new FfmpegGUI();
     }
 }
 
