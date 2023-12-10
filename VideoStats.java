@@ -9,8 +9,8 @@ import java.io.BufferedReader;
 import java.io.InputStreamReader;
 
 public class VideoStats {
-    private FFmpegGUI gui;
-    public VideoStats(String inputFilePath){
+    public VideoStats(FFmpegGUI gui, String inputFilePath){
+        
         Path path = Paths.get(inputFilePath);
 
         try {

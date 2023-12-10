@@ -9,7 +9,7 @@ import javax.swing.filechooser.FileNameExtensionFilter;
 public class ButtonHandler implements ActionListener {
     private FFmpegGUI gui;
     private FileNameExtensionFilter filter = new FileNameExtensionFilter("MP4 Files (*.mp4)", "mp4");
-    private StartFfmpeg compressionWorker;
+    private FFmpegHandler compressionWorker;
 
     public ButtonHandler(FFmpegGUI gui){
         this.gui = gui;
@@ -34,7 +34,11 @@ public class ButtonHandler implements ActionListener {
                 File selectedFile = gui.getFileChooser().getSelectedFile();
                 if (selectedFile.getName().toLowerCase().endsWith(".mp4")){
                     gui.getVideoPath().setText(selectedFile.getAbsolutePath());
-                    new VideoStats(selectedFile.getAbsolutePath());
+                    File parentDirectory = selectedFile.getParentFile();
+                    new VideoStats(gui, selectedFile.getAbsolutePath());
+                    if (parentDirectory != null){
+                        gui.getOutputPath().setText(parentDirectory.getAbsolutePath());
+                    }
                 }
                 else {
                     JOptionPane.showMessageDialog(gui.getMainframe(), "Please choose a .mp4 file", "Wrong file", JOptionPane.WARNING_MESSAGE);
@@ -50,7 +54,7 @@ public class ButtonHandler implements ActionListener {
             }
         }   
         if (e.getSource()==gui.getCompressButton()){
-            compressionWorker = new StartFfmpeg(gui);
+            compressionWorker = new FFmpegHandler(gui);
             compressionWorker.execute();
         }
     }
