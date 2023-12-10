@@ -7,11 +7,11 @@ import javax.swing.filechooser.FileNameExtensionFilter;
 
 
 public class ButtonHandler implements ActionListener {
-    private FfmpegGUI gui;
+    private FFmpegGUI gui;
     private FileNameExtensionFilter filter = new FileNameExtensionFilter("MP4 Files (*.mp4)", "mp4");
     private StartFfmpeg compressionWorker;
 
-    public ButtonHandler(FfmpegGUI gui){
+    public ButtonHandler(FFmpegGUI gui){
         this.gui = gui;
         gui.getCancelButton().addActionListener(this);
         gui.getBrowseButton().addActionListener(this);

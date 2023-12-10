@@ -3,7 +3,7 @@ import javax.swing.border.EmptyBorder;
 
 import java.awt.*;
 
-public class FfmpegGUI {
+public class FFmpegGUI {
      
     private JFrame mainFrame;
     
@@ -34,7 +34,7 @@ public class FfmpegGUI {
     private JTextArea cmdArea;
     private JTextArea propArea;
 
-    public FfmpegGUI() {
+    public FFmpegGUI() {
         mainFrame = new JFrame("FFMPEG Interface");
 
         fileChooser = new JFileChooser();
@@ -213,7 +213,7 @@ public class FfmpegGUI {
     }
 
     public static void main(String[] args) {
-        new FfmpegGUI();
+        new FFmpegGUI();
     }
 }
 

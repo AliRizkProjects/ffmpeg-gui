@@ -4,9 +4,9 @@ import java.io.InputStreamReader;
 import javax.swing.SwingWorker;
 
 public class StartFfmpeg extends SwingWorker<Void, String>{
-    FfmpegGUI gui;
+    FFmpegGUI gui;
     private String line;
-    public StartFfmpeg(FfmpegGUI gui) {
+    public StartFfmpeg(FFmpegGUI gui) {
         this.gui = gui;
     }
      
