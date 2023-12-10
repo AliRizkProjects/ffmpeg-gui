@@ -17,7 +17,7 @@ public class FfmpegGUI {
     private JButton browseButton;
     private JButton outputButton;
 
-    private JComboBox crfDropDown;
+    private JComboBox<String> crfDropDown;
 
     private JProgressBar pb;
 
@@ -34,8 +34,6 @@ public class FfmpegGUI {
     private JTextArea cmdArea;
     private JTextArea propArea;
 
-    private String[] crfValues;
-
     public FfmpegGUI() {
         mainFrame = new JFrame("FFMPEG Interface");
 
@@ -43,7 +41,7 @@ public class FfmpegGUI {
         folderChooser = new JFileChooser();
 
         String[] crfValues = {"20 (Very Low)", "24 (Low)", "28 (Medium)", "32 (High)", "36 (Very High)"};
-        crfDropDown = new JComboBox(crfValues);
+        crfDropDown = new JComboBox<>(crfValues);
 
         // Panel
         pathPanel = new JPanel(new BorderLayout());
@@ -97,21 +95,20 @@ public class FfmpegGUI {
         // cmdArea.setMaximumSize(new Dimension(300, 200));
         cmdArea.setBackground(mainFrame.getBackground());
         cmdArea.setEditable(true);
-        cmdArea.setFont(new Font("Consolas", Font.PLAIN, 12));
+        cmdArea.setFont(new Font("Consolas", Font.PLAIN, 10));
         cmdArea.setLineWrap(true);
         cmdArea.setWrapStyleWord(true);
         cmdScroll.setBorder(BorderFactory.createTitledBorder("Console"));
         cmdScroll.setAlignmentX(0);
-
-        cmdScroll.setPreferredSize(new Dimension(300,100));
-        cmdScroll.setMinimumSize(new Dimension(300,100));
-        cmdScroll.setMaximumSize(new Dimension(300, 200));
+        cmdScroll.setPreferredSize(new Dimension(350,100));
+        cmdScroll.setMinimumSize(new Dimension(350,100));
+        cmdScroll.setMaximumSize(new Dimension(350, 200));
         cmdScroll.setBackground(mainFrame.getBackground());
 
         // progress bar
-        pb.setMinimumSize(new Dimension(300, 25));
-        pb.setPreferredSize(new Dimension(300,25));
-        pb.setMaximumSize(new Dimension(300,25));
+        pb.setMinimumSize(new Dimension(350, 25));
+        pb.setPreferredSize(new Dimension(350,25));
+        pb.setMaximumSize(new Dimension(350,25));
         pb.setAlignmentX(0);
         pb.setValue(0);
         pb.setStringPainted(true);
@@ -211,7 +208,7 @@ public class FfmpegGUI {
     public JProgressBar getProgressBar(){
         return pb;
     }
-    public JComboBox getCrfComboBox(){
+    public JComboBox<String> getCrfComboBox(){
         return crfDropDown;
     }
 

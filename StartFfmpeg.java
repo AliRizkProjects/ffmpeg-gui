@@ -28,6 +28,7 @@ public class StartFfmpeg extends SwingWorker<Void, String>{
             while ((line = reader.readLine()) != null){
                 System.out.println(line);
                 gui.getCmdArea().append(line);
+                gui.getCmdArea().setCaretPosition(gui.getCmdArea().getDocument().getLength());
             }
             int exitCode = process.waitFor();
             System.out.println("Exitcode: "+ exitCode);
