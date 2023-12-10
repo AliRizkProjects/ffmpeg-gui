@@ -96,13 +96,15 @@ public class FFmpegGUI {
         cmdArea.setBackground(mainFrame.getBackground());
         cmdArea.setEditable(true);
         cmdArea.setFont(new Font("Consolas", Font.PLAIN, 10));
+        cmdArea.setForeground(Color.WHITE);
+        cmdArea.setBackground(Color.BLACK);
         cmdArea.setLineWrap(true);
         cmdArea.setWrapStyleWord(true);
-        cmdScroll.setBorder(BorderFactory.createTitledBorder("Console"));
+        cmdScroll.setBorder(BorderFactory.createTitledBorder("Console output"));
         cmdScroll.setAlignmentX(0);
         cmdScroll.setPreferredSize(new Dimension(350,100));
         cmdScroll.setMinimumSize(new Dimension(350,100));
-        cmdScroll.setMaximumSize(new Dimension(350, 200));
+        cmdScroll.setMaximumSize(new Dimension(500, 300));
         cmdScroll.setBackground(mainFrame.getBackground());
 
         // progress bar

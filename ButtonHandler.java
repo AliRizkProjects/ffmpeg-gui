@@ -34,6 +34,7 @@ public class ButtonHandler implements ActionListener {
                 File selectedFile = gui.getFileChooser().getSelectedFile();
                 if (selectedFile.getName().toLowerCase().endsWith(".mp4")){
                     gui.getVideoPath().setText(selectedFile.getAbsolutePath());
+                    new VideoStats(selectedFile.getAbsolutePath());
                 }
                 else {
                     JOptionPane.showMessageDialog(gui.getMainframe(), "Please choose a .mp4 file", "Wrong file", JOptionPane.WARNING_MESSAGE);
