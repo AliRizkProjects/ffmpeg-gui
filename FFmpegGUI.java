@@ -1,10 +1,10 @@
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
-
 import java.awt.*;
+import java.awt.dnd.DropTarget;
 
 public class FFmpegGUI {
-     
+
     private JFrame mainFrame;
     
     private JPanel bottomPanel;
@@ -18,7 +18,7 @@ public class FFmpegGUI {
     private JButton browseButton;
     private JButton outputButton;
 
-    private JComboBox<String> crfDropDown;
+    private JComboBox<String> crfComboBox;
 
     private JProgressBar pb;
 
@@ -29,8 +29,8 @@ public class FFmpegGUI {
     private JFileChooser fileChooser;
     private JFileChooser folderChooser;
     
-    private JTextField videoPath;
-    private JTextField outputPath;
+    private JTextField videoPathTextField;
+    private JTextField outputPathTextField;
     private JTextField outputName;
     
     private JScrollPane cmdScroll;
@@ -38,13 +38,14 @@ public class FFmpegGUI {
     private JTextArea propArea;
 
     public FFmpegGUI() {
+
         mainFrame = new JFrame("FFMPEG Interface");
 
         fileChooser = new JFileChooser();
         folderChooser = new JFileChooser();
 
         String[] crfValues = {"20", "24", "28", "32", "36"};
-        crfDropDown = new JComboBox<>(crfValues);
+        crfComboBox = new JComboBox<>(crfValues);
 
         // Panel
         topPanel = new JPanel(new BorderLayout());
@@ -63,8 +64,8 @@ public class FFmpegGUI {
         outputButton.setAlignmentX(1);
 
         // Texts
-        videoPath = new JTextField();
-        outputPath = new JTextField();
+        videoPathTextField = new JTextField();
+        outputPathTextField = new JTextField();
         outputName = new JTextField();
         cmdArea = new JTextArea();
         cmdScroll = new JScrollPane(cmdArea);
@@ -76,13 +77,13 @@ public class FFmpegGUI {
         pb = new JProgressBar();
 
         // design Textfields
-        pathLabel.setLabelFor(videoPath);
-        videoPath.setEditable(false);
-        videoPath.setFont(new Font("Arial", Font.PLAIN, 14));
-        outputPath.setEditable(false);
-        outputPath.setFont(new Font("Arial", Font.PLAIN, 14));
-        outputPath.setMaximumSize(new Dimension(300,18));
-        outputPath.setAlignmentX(1);
+        pathLabel.setLabelFor(videoPathTextField);
+        videoPathTextField.setEditable(false);
+        videoPathTextField.setFont(new Font("Arial", Font.PLAIN, 14));
+        outputPathTextField.setEditable(false);
+        outputPathTextField.setFont(new Font("Arial", Font.PLAIN, 14));
+        outputPathTextField.setMaximumSize(new Dimension(300,18));
+        outputPathTextField.setAlignmentX(1);
 
         // properties area
         
@@ -129,17 +130,17 @@ public class FFmpegGUI {
         // dropdown menu crf value
         outputLabel.setAlignmentX(1);
         outputName.setAlignmentX(1);
-        crfDropDown.setAlignmentX(1);
+        crfComboBox.setAlignmentX(1);
         compressionLabel.setAlignmentX(1);
 
-        crfDropDown.setMinimumSize(new Dimension(50, 25));
-        crfDropDown.setMaximumSize(new Dimension(50, 25));
-        crfDropDown.setPreferredSize(new Dimension(50, 25));
-        crfDropDown.setToolTipText("<html>Adjust the CRF (Constant Rate Factor) value for compression<br/>Higher values result in stronger compression<br/>You also have the option to set this value manually</html>");
-        crfDropDown.setBorder(new EmptyBorder(0, 0, 5, 0));
-        crfDropDown.setEditable(true);
+        crfComboBox.setMinimumSize(new Dimension(50, 25));
+        crfComboBox.setMaximumSize(new Dimension(50, 25));
+        crfComboBox.setPreferredSize(new Dimension(50, 25));
+        crfComboBox.setToolTipText("<html>Adjust the CRF (Constant Rate Factor) value for compression<br/>Higher values result in stronger compression<br/>You also have the option to set this value manually</html>");
+        crfComboBox.setBorder(new EmptyBorder(0, 0, 5, 0));
+        crfComboBox.setEditable(true);
 
-        compressionLabel.setLabelFor(crfDropDown);
+        compressionLabel.setLabelFor(crfComboBox);
 
         outputName.setText("output.mp4");
         outputName.setFont(new Font("Arial", Font.PLAIN, 14));
@@ -157,7 +158,7 @@ public class FFmpegGUI {
         topPanel.setPreferredSize(new Dimension(50,30));
         topPanel.add(pathLabel, BorderLayout.WEST);
         topPanel.add(browseButton, BorderLayout.EAST);
-        topPanel.add(videoPath);
+        topPanel.add(videoPathTextField);
         topPanel.setBorder(new EmptyBorder(5, 5, 5, 5));
 
         leftPanel.setLayout(new BoxLayout(leftPanel, BoxLayout.Y_AXIS));
@@ -167,9 +168,9 @@ public class FFmpegGUI {
 
         rightPanel.setLayout(new BoxLayout(rightPanel, BoxLayout.Y_AXIS));
         rightPanel.add(compressionLabel);
-        rightPanel.add(crfDropDown);
+        rightPanel.add(crfComboBox);
         rightPanel.add(Box.createVerticalStrut(20));
-        rightPanel.add(outputPath);
+        rightPanel.add(outputPathTextField);
         rightPanel.add(Box.createVerticalStrut(5));
         rightPanel.add(outputButton);
         rightPanel.add(Box.createVerticalStrut(50));
@@ -188,6 +189,13 @@ public class FFmpegGUI {
         mainFrame.setVisible(true);
 
         new ButtonHandler(this);
+        new DropTarget(mainFrame, new FileDropTargetAdapter(this));
+        new DropTarget(cmdArea, new FileDropTargetAdapter(this));
+        new DropTarget(videoPathTextField, new FileDropTargetAdapter(this));
+        new DropTarget(outputPathTextField, new FileDropTargetAdapter(this));
+        new DropTarget(propArea, new FileDropTargetAdapter(this));
+        new DropTarget(outputName, new FileDropTargetAdapter(this));
+        // new DropTarget(cmdArea, new FileDropTargetAdapter(this));
     }
 
     // Getter Methods
@@ -210,11 +218,11 @@ public class FFmpegGUI {
         return outputButton;
     }
 
-    public JTextField getVideoPath() {
-        return videoPath;
+    public JTextField getVideoPathTextField() {
+        return videoPathTextField;
     }
-    public JTextField getOutputPath(){
-        return outputPath;
+    public JTextField getOutputPathTextField(){
+        return outputPathTextField;
     }
     public JFrame getMainframe(){
         return mainFrame;
@@ -235,13 +243,13 @@ public class FFmpegGUI {
         return pb;
     }
     public JComboBox<String> getCrfComboBox(){
-        return crfDropDown;
+        return crfComboBox;
     }
     public JTextField getOutputName(){
         return outputName;
     }
 
     public static void main(String[] args) {
-        new FFmpegGUI();
+        SwingUtilities.invokeLater(() -> new FFmpegGUI());
     }
 }
