@@ -53,7 +53,6 @@ public class FFmpegGUI {
         leftPanel = new JPanel();
         bottomPanel = new JPanel();
         rightPanel = new JPanel();
-// test
         
         // Buttons
         browseButton = new JButton("Browse...");
@@ -195,7 +194,6 @@ public class FFmpegGUI {
         new DropTarget(outputPathTextField, new FileDropTargetAdapter(this));
         new DropTarget(propArea, new FileDropTargetAdapter(this));
         new DropTarget(outputName, new FileDropTargetAdapter(this));
-        // new DropTarget(cmdArea, new FileDropTargetAdapter(this));
     }
 
     // Getter Methods
