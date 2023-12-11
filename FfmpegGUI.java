@@ -42,7 +42,7 @@ public class FFmpegGUI {
         fileChooser = new JFileChooser();
         folderChooser = new JFileChooser();
 
-        String[] crfValues = {"20 (Very Low)", "24 (Low)", "28 (Medium)", "32 (High)", "36 (Very High)"};
+        String[] crfValues = {"20", "24", "28", "32", "36"};
         crfDropDown = new JComboBox<>(crfValues);
 
         // Panel
