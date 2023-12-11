@@ -10,18 +10,29 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class VideoStats {
-    public VideoStats(FFmpegGUI gui, String inputFilePath) {
+    String inputFilePath;
+    String fileSize;
+    String fileName;
+    String videoLength;
+    String displayText;
+
+    public VideoStats(String inputFilePath) {
 
         Path path = Paths.get(inputFilePath);
 
         try {
-            String fileSize = getFileSize(inputFilePath);
-            String fileName = path.getFileName().toString();
-            String videoLength = getVideoDuration(inputFilePath);
-            gui.getPropArea().setText("Name: " + fileName + "\nSize: " + fileSize + "\nLength: " + videoLength + "sec");
+            this.fileSize = getFileSize(inputFilePath);
+            this.fileName = path.getFileName().toString();
+            this.videoLength = getVideoDuration(inputFilePath);
+            this.displayText = "Name: " + fileName + "\nSize: " + fileSize + "\nLength: " + videoLength + "sec";
         } catch (IOException e) {
+            this.displayText = "Video statistics could not be determined.";
             e.printStackTrace();
         }
+    }
+
+    public String getDisplayText() {
+        return this.displayText;
     }
 
     private static String getFileSize(String inputFilePath) throws IOException {
