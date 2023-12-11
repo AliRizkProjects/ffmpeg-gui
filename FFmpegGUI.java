@@ -1,9 +1,12 @@
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
-
+import javax.swing.filechooser.FileNameExtensionFilter;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.io.File;
 
-public class FFmpegGUI {
+public class FFmpegGUI implements ActionListener {
 
     private JFrame mainFrame;
 
@@ -37,6 +40,9 @@ public class FFmpegGUI {
     private JTextArea cmdArea;
     private JTextArea propArea;
 
+    private FileNameExtensionFilter filter = new FileNameExtensionFilter("MP4 Files (*.mp4)", "mp4");
+    private FFmpegHandler compressionWorker;
+
     public FFmpegGUI() {
         mainFrame = new JFrame("FFMPEG Interface");
 
@@ -60,6 +66,14 @@ public class FFmpegGUI {
         compressButton = new JButton("Compress");
         outputButton = new JButton("Choose Output Location");
         outputButton.setAlignmentX(1);
+
+        // Listeners
+        closeButton.addActionListener(this);
+        stopButton.addActionListener(this);
+        browseButton.addActionListener(this);
+        compressButton.addActionListener(this);
+        outputButton.addActionListener(this);
+        fileChooser.setFileFilter(filter);
 
         // Texts
         videoPath = new JTextField();
@@ -185,72 +199,70 @@ public class FFmpegGUI {
         mainFrame.setSize(750, 500);
         mainFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         mainFrame.setVisible(true);
-
-        new ButtonHandler(this);
     }
 
     // Getter Methods
-    public JButton getCompressButton() {
-        return compressButton;
-    }
-
-    public JButton getCloseButton() {
-        return closeButton;
-    }
-
-    public JButton getStopButton() {
-        return stopButton;
-    }
-
-    public JButton getBrowseButton() {
-        return browseButton;
-    }
-
-    public JButton getOutputButton() {
-        return outputButton;
-    }
-
-    public JTextField getVideoPath() {
-        return videoPath;
-    }
-
-    public JTextField getOutputPath() {
-        return outputPath;
-    }
-
     public JFrame getMainframe() {
         return mainFrame;
-    }
-
-    public JFileChooser getFileChooser() {
-        return fileChooser;
-    }
-
-    public JFileChooser getFolderChooser() {
-        return folderChooser;
     }
 
     public JTextArea getCmdArea() {
         return cmdArea;
     }
 
-    public JTextArea getPropArea() {
-        return propArea;
-    }
-
-    public JProgressBar getProgressBar() {
-        return pb;
-    }
-
-    public JComboBox<String> getCrfComboBox() {
-        return crfDropDown;
-    }
-
-    public JTextField getOutputName() {
-        return outputName;
-    }
-
     public static void main(String[] args) {
         new FFmpegGUI();
+    }
+
+    @Override
+    public void actionPerformed(ActionEvent e) {
+        if (e.getSource() == closeButton) {
+            if (compressionWorker != null) {
+                compressionWorker.cancel(true);
+            }
+            mainFrame.dispose();
+        }
+        if (e.getSource() == stopButton) {
+            if (compressionWorker != null) {
+                compressionWorker.cancel(true);
+            }
+        }
+        if (e.getSource() == browseButton) {
+            int file = fileChooser.showOpenDialog(mainFrame);
+            if (file == JFileChooser.APPROVE_OPTION) {
+                File selectedFile = fileChooser.getSelectedFile();
+                if (selectedFile.getName().toLowerCase().endsWith(".mp4")) {
+                    videoPath.setText(selectedFile.getAbsolutePath());
+                    File parentDirectory = selectedFile.getParentFile();
+
+                    VideoStats stats = new VideoStats(selectedFile.getAbsolutePath());
+                    propArea.setText(stats.getDisplayText());
+                    if (parentDirectory != null) {
+                        outputPath.setText(parentDirectory.getAbsolutePath());
+                    }
+                } else {
+                    JOptionPane.showMessageDialog(mainFrame, "Please choose a .mp4 file", "Wrong file",
+                            JOptionPane.WARNING_MESSAGE);
+                }
+            }
+        }
+        if (e.getSource() == outputButton) {
+            folderChooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
+            int folder = folderChooser.showOpenDialog(getMainframe());
+            if (folder == JFileChooser.APPROVE_OPTION) {
+                File selectedDirectory = folderChooser.getSelectedFile();
+                outputPath.setText(selectedDirectory.getAbsolutePath());
+            }
+        }
+        if (e.getSource() == compressButton) {
+            String videoFilePath = videoPath.getText();
+            String videoOutputPath = outputPath.getText();
+            String crfOption = (String) crfDropDown.getSelectedItem();
+            String videoOutputFilename = outputName.getText();
+
+            compressionWorker = new FFmpegHandler(this.mainFrame, this.cmdArea, videoFilePath, videoOutputPath,
+                    videoOutputFilename, crfOption);
+            compressionWorker.execute();
+        }
     }
 }
