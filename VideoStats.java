@@ -10,20 +10,20 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class VideoStats {
-    public VideoStats(FFmpegGUI gui, String inputFilePath){
-        
+    public VideoStats(FFmpegGUI gui, String inputFilePath) {
+
         Path path = Paths.get(inputFilePath);
 
         try {
             String fileSize = getFileSize(inputFilePath);
             String fileName = path.getFileName().toString();
             String videoLength = getVideoDuration(inputFilePath);
-            gui.getPropArea().setText("Name: "+fileName+ "\nSize: "+fileSize+"\nLength: "+ videoLength+"sec");
-        }catch (IOException e) {
+            gui.getPropArea().setText("Name: " + fileName + "\nSize: " + fileSize + "\nLength: " + videoLength + "sec");
+        } catch (IOException e) {
             e.printStackTrace();
         }
     }
-    
+
     private static String getFileSize(String inputFilePath) throws IOException {
         Path path = Paths.get(inputFilePath);
 
@@ -51,25 +51,24 @@ public class VideoStats {
             }
             process.waitFor();
 
+            String pattern = "duration=([\\d.]+)";
+            Pattern regex = Pattern.compile(pattern);
+            String duration = durationBuilder.toString();
+            Matcher matcher = regex.matcher(duration);
 
-        String pattern = "duration=([\\d.]+)";
-        Pattern regex = Pattern.compile(pattern);
-        String duration = durationBuilder.toString();
-        Matcher matcher = regex.matcher(duration);
+            if (matcher.find()) {
+                duration = matcher.group(1);
+                double formattedDuration = Double.parseDouble(duration);
+                duration = String.format("%.2f", formattedDuration);
+                return duration;
+            } else {
+                System.out.println("test");
+                return null;
+            }
 
-        if (matcher.find()){
-            duration = matcher.group(1);
-            double formattedDuration = Double.parseDouble(duration);
-            duration = String.format("%.2f", formattedDuration);
-            return duration;
-        } else {
-            System.out.println("test");
+        } catch (IOException | InterruptedException e) {
+            e.printStackTrace();
             return null;
         }
-
-    } catch (IOException | InterruptedException e) {
-        e.printStackTrace();
-        return null;
-    }
     }
 }
