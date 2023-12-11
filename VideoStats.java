@@ -1,12 +1,13 @@
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
 import java.nio.file.Files;
 import java.io.IOException;
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class VideoStats {
     public VideoStats(FFmpegGUI gui, String inputFilePath){
@@ -59,12 +60,20 @@ public class VideoStats {
         }
         process.waitFor();
 
-        String duration = durationBuilder.toString().replace("duration=","");
+        String pattern = "duration=([\\d.]+)";
+        Pattern regex = Pattern.compile(pattern);
+        String duration = durationBuilder.toString();
+        Matcher matcher = regex.matcher(duration);
 
-        double formattedDuration = Double.parseDouble(duration);
-        DecimalFormat decimalFormat = new DecimalFormat("#0.00");
-        duration = decimalFormat.format(formattedDuration);
-        return duration;
+        if (matcher.find()){
+            duration = matcher.group(1);
+            double formattedDuration = Double.parseDouble(duration);
+            duration = String.format("%.2f", formattedDuration);
+            return duration;
+        } else {
+            System.out.println("test");
+            return null;
+        }
 
     } catch (IOException | InterruptedException e) {
         e.printStackTrace();
