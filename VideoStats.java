@@ -28,9 +28,9 @@ public class VideoStats {
         Path path = Paths.get(inputFilePath);
 
         double fileSize = Files.size(path);
-        // format bytes into megabytes
-        fileSize = fileSize / (1024*1024);
-        String formattedSize = String.format("%.2f"+"MB", fileSize);
+        // format bytes into mebibytes
+        fileSize = fileSize / (1024 * 1024);
+        String formattedSize = String.format("%.2f" + "MiB", fileSize);
         return formattedSize;
     }
 
