@@ -13,7 +13,8 @@ public class FFmpegGUI {
     private JPanel rightPanel;
 
     private JButton compressButton;
-    private JButton cancelButton;
+    private JButton closeButton;
+    private JButton stopButton;
     private JButton browseButton;
     private JButton outputButton;
 
@@ -55,7 +56,8 @@ public class FFmpegGUI {
         
         // Buttons
         browseButton = new JButton("Browse...");
-        cancelButton = new JButton("Close");
+        closeButton = new JButton("Close");
+        stopButton = new JButton("Stop Process");
         compressButton = new JButton("Compress");
         outputButton = new JButton("Choose Output Location");
         outputButton.setAlignmentX(1);
@@ -121,7 +123,7 @@ public class FFmpegGUI {
   
         // cancel + compress button design
 
-        cancelButton.setPreferredSize(new Dimension(100,40));
+        closeButton.setPreferredSize(new Dimension(100,40));
         compressButton.setPreferredSize(new Dimension(100,40));
 
         // dropdown menu crf value
@@ -130,9 +132,9 @@ public class FFmpegGUI {
         crfDropDown.setAlignmentX(1);
         compressionLabel.setAlignmentX(1);
 
-        crfDropDown.setMinimumSize(new Dimension(120, 25));
-        crfDropDown.setMaximumSize(new Dimension(120, 25));
-        crfDropDown.setPreferredSize(new Dimension(120, 25));
+        crfDropDown.setMinimumSize(new Dimension(50, 25));
+        crfDropDown.setMaximumSize(new Dimension(50, 25));
+        crfDropDown.setPreferredSize(new Dimension(50, 25));
         crfDropDown.setToolTipText("<html>Adjust the CRF (Constant Rate Factor) value for compression<br/>Higher values result in stronger compression<br/>You also have the option to set this value manually</html>");
         crfDropDown.setBorder(new EmptyBorder(0, 0, 5, 0));
         crfDropDown.setEditable(true);
@@ -147,8 +149,9 @@ public class FFmpegGUI {
         // panels
         bottomPanel.setLayout(new BoxLayout(bottomPanel, BoxLayout.LINE_AXIS));
         bottomPanel.add(compressButton);
+        bottomPanel.add(stopButton);
         bottomPanel.add(Box.createHorizontalGlue());
-        bottomPanel.add(cancelButton);
+        bottomPanel.add(closeButton);
         bottomPanel.setBorder(new EmptyBorder(5, 5, 5, 5));
 
         topPanel.setPreferredSize(new Dimension(50,30));
@@ -165,6 +168,7 @@ public class FFmpegGUI {
         rightPanel.setLayout(new BoxLayout(rightPanel, BoxLayout.Y_AXIS));
         rightPanel.add(compressionLabel);
         rightPanel.add(crfDropDown);
+        rightPanel.add(Box.createVerticalStrut(20));
         rightPanel.add(outputPath);
         rightPanel.add(Box.createVerticalStrut(5));
         rightPanel.add(outputButton);
@@ -191,8 +195,12 @@ public class FFmpegGUI {
         return compressButton;
     }
 
-    public JButton getCancelButton() {
-        return cancelButton;
+    public JButton getCloseButton() {
+        return closeButton;
+    }
+    
+    public JButton getStopButton() {
+        return stopButton;
     }
 
     public JButton getBrowseButton() {

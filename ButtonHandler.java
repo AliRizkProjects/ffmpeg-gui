@@ -13,7 +13,8 @@ public class ButtonHandler implements ActionListener {
 
     public ButtonHandler(FFmpegGUI gui){
         this.gui = gui;
-        gui.getCancelButton().addActionListener(this);
+        gui.getCloseButton().addActionListener(this);
+        gui.getStopButton().addActionListener(this);
         gui.getBrowseButton().addActionListener(this);
         gui.getCompressButton().addActionListener(this);
         gui.getOutputButton().addActionListener(this);
@@ -22,11 +23,16 @@ public class ButtonHandler implements ActionListener {
 
     @Override
     public void actionPerformed(ActionEvent e){
-        if (e.getSource()==gui.getCancelButton()){
+        if (e.getSource()==gui.getCloseButton()){
             if (compressionWorker != null) {
                 compressionWorker.cancel(true);
             }
             gui.getMainframe().dispose();
+        }
+        if (e.getSource()==gui.getStopButton()){
+            if (compressionWorker != null) {
+                compressionWorker.cancel(true);
+            }
         }
         if (e.getSource()==gui.getBrowseButton()){
             int file = gui.getFileChooser().showOpenDialog(gui.getMainframe());

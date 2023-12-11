@@ -1,5 +1,5 @@
 import java.io.BufferedReader;
-import java.io.IOException;
+// import java.io.IOException;
 import java.io.InputStreamReader;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -16,6 +16,7 @@ public class FFmpegHandler extends SwingWorker<Void, String>{
     }
      
     protected Void doInBackground() throws Exception{
+        Process process = null;
         
         String videoFilePath = gui.getVideoPath().getText();
         String videoOutputPath = gui.getOutputPath().getText(); 
@@ -28,26 +29,27 @@ public class FFmpegHandler extends SwingWorker<Void, String>{
         String checkFilename = gui.getOutputName().getText();
         Path checkFilepath = Paths.get(videoOutputPath, checkFilename);
         if (Files.exists(checkFilepath)){
-            JOptionPane.showMessageDialog(gui.getMainframe(), "Filename already exists, please choose a different name","Same file", JOptionPane.WARNING_MESSAGE);
+            JOptionPane.showMessageDialog(gui.getMainframe(), "Sorry, but the chosen filename already exists. Please pick a different name.","File already exists", JOptionPane.WARNING_MESSAGE);
             }
         else {
         // create and run process
             ProcessBuilder pb = new ProcessBuilder(command.split(" "));
             pb.redirectErrorStream(true);
             try {
-                Process process = pb.start();
+                process = pb.start();
 
                 BufferedReader reader = new BufferedReader(new InputStreamReader(process.getInputStream()));
-                while ((line = reader.readLine()) != null){
+                while (!isCancelled() && (line = reader.readLine()) != null){
                     System.out.println(line);
                     gui.getCmdArea().append(line);
                     gui.getCmdArea().setCaretPosition(gui.getCmdArea().getDocument().getLength());
                 }
-                int exitCode = process.waitFor();
-                System.out.println("Exitcode: "+ exitCode);
-            } catch (IOException | InterruptedException e){
-                e.printStackTrace();
-            } 
+            } finally {
+                if (isCancelled()){
+                    process.destroy();
+                    gui.getCmdArea().append("PROCESS STOPPED");
+                }
+            }
         }
         return null;
     }
