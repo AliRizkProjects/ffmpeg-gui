@@ -1,5 +1,4 @@
 import java.io.BufferedReader;
-// import java.io.IOException;
 import java.io.InputStreamReader;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -18,8 +17,8 @@ public class FFmpegHandler extends SwingWorker<Void, String>{
     protected Void doInBackground() throws Exception{
         Process process = null;
         
-        String videoFilePath = gui.getVideoPath().getText();
-        String videoOutputPath = gui.getOutputPath().getText(); 
+        String videoFilePath = gui.getVideoPathTextField().getText();
+        String videoOutputPath = gui.getOutputPathTextField().getText(); 
 
         // command to be executed
         String command = "ffmpeg -i \"" + videoFilePath + "\" -vcodec libx264 -crf "+gui.getCrfComboBox().getSelectedItem()+" \""+ videoOutputPath +"\\"+gui.getOutputName().getText()+"\"";
@@ -47,7 +46,8 @@ public class FFmpegHandler extends SwingWorker<Void, String>{
             } finally {
                 if (isCancelled()){
                     process.destroy();
-                    gui.getCmdArea().append("PROCESS STOPPED");
+                    gui.getCmdArea().append("\n!!!!! PROCESS STOPPED !!!!!");
+                    gui.getCmdArea().setCaretPosition(gui.getCmdArea().getDocument().getLength());
                 }
             }
         }

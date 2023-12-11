@@ -39,15 +39,15 @@ public class ButtonHandler implements ActionListener {
             if (file == JFileChooser.APPROVE_OPTION){
                 File selectedFile = gui.getFileChooser().getSelectedFile();
                 if (selectedFile.getName().toLowerCase().endsWith(".mp4")){
-                    gui.getVideoPath().setText(selectedFile.getAbsolutePath());
+                    gui.getVideoPathTextField().setText(selectedFile.getAbsolutePath());
                     File parentDirectory = selectedFile.getParentFile();
                     new VideoStats(gui, selectedFile.getAbsolutePath());
                     if (parentDirectory != null){
-                        gui.getOutputPath().setText(parentDirectory.getAbsolutePath());
+                        gui.getOutputPathTextField().setText(parentDirectory.getAbsolutePath());
                     }
                 }
                 else {
-                    JOptionPane.showMessageDialog(gui.getMainframe(), "Please choose a .mp4 file", "Wrong file", JOptionPane.WARNING_MESSAGE);
+                    JOptionPane.showMessageDialog(gui.getMainframe(), "Please choose a .mp4 file", "Not a mp4 file", JOptionPane.WARNING_MESSAGE);
                 }
             }
         }
@@ -56,7 +56,7 @@ public class ButtonHandler implements ActionListener {
             int folder = gui.getFolderChooser().showOpenDialog(gui.getMainframe());
             if (folder == JFileChooser.APPROVE_OPTION){
                 File selectedDirectory = gui.getFolderChooser().getSelectedFile();
-                gui.getOutputPath().setText(selectedDirectory.getAbsolutePath());
+                gui.getOutputPathTextField().setText(selectedDirectory.getAbsolutePath());
             }
         }   
         if (e.getSource()==gui.getCompressButton()){

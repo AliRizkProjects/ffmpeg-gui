@@ -59,7 +59,8 @@ public class VideoStats {
             durationBuilder.append(line);
         }
         process.waitFor();
-
+        
+        // get duration of video via pattern matching
         String pattern = "duration=([\\d.]+)";
         Pattern regex = Pattern.compile(pattern);
         String duration = durationBuilder.toString();
@@ -70,14 +71,10 @@ public class VideoStats {
             double formattedDuration = Double.parseDouble(duration);
             duration = String.format("%.2f", formattedDuration);
             return duration;
-        } else {
-            System.out.println("test");
-            return null;
         }
-
-    } catch (IOException | InterruptedException e) {
+        } catch (IOException | InterruptedException e) {
         e.printStackTrace();
-        return null;
-    }
+        }
+    return null;
     }
 }
