@@ -70,7 +70,7 @@ public class FFmpegGUI {
         cmdScroll = new JScrollPane(cmdArea);
         propArea = new JTextArea();
         pathLabel = new JLabel("File: ");
-        compressionLabel = new JLabel("Compression Intensity");
+        compressionLabel = new JLabel("Compression Intensity (CRF Value)");
         outputLabel = new JLabel("Set Output Name");
 
         pb = new JProgressBar();
