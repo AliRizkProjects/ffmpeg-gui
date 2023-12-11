@@ -35,30 +35,22 @@ public class VideoStats {
     }
 
     // get video duration
-    public String getVideoDuration(String inputFilePath){
-        try{
-            List<String> command = new ArrayList<>();
-            command.add("ffprobe");
-            command.add("-v");
-            command.add("error");
-            command.add("-show_entries");
-            command.add("format=duration");
-            command.add("-of");
-            command.add("default=noprint_wrappers=1");
-            command.add(inputFilePath);
+    public String getVideoDuration(String inputFilePath) {
+        try {
+            ProcessBuilder processBuilder = new ProcessBuilder("ffprobe", "-v", "error", "-show_entries",
+                    "format=duration", "-of", "default=noprint_wrappers=1", inputFilePath);
+            processBuilder.redirectErrorStream(true);
+            Process process = processBuilder.start();
 
-        ProcessBuilder processBuilder = new ProcessBuilder(command);
-        processBuilder.redirectErrorStream(true);
-        Process process = processBuilder.start();
+            BufferedReader reader = new BufferedReader(new InputStreamReader(process.getInputStream()));
+            StringBuilder durationBuilder = new StringBuilder();
 
-        BufferedReader reader = new BufferedReader(new InputStreamReader(process.getInputStream()));
-        StringBuilder durationBuilder = new StringBuilder();
-        String line;
+            String line;
+            while ((line = reader.readLine()) != null) {
+                durationBuilder.append(line);
+            }
+            process.waitFor();
 
-        while ((line = reader.readLine()) != null) {
-            durationBuilder.append(line);
-        }
-        process.waitFor();
 
         String pattern = "duration=([\\d.]+)";
         Pattern regex = Pattern.compile(pattern);

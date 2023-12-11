@@ -10,36 +10,36 @@ import javax.swing.SwingWorker;
 
 public class FFmpegHandler extends SwingWorker<Void, String>{
     FFmpegGUI gui;
-    private String line;
+
     public FFmpegHandler(FFmpegGUI gui) {
         this.gui = gui;
     }
      
     protected Void doInBackground() throws Exception{
         Process process = null;
-        
-        String videoFilePath = gui.getVideoPath().getText();
-        String videoOutputPath = gui.getOutputPath().getText(); 
 
-        // command to be executed
-        String command = "ffmpeg -i \"" + videoFilePath + "\" -vcodec libx264 -crf "+gui.getCrfComboBox().getSelectedItem()+" \""+ videoOutputPath +"\\"+gui.getOutputName().getText()+"\"";
-        
+        String videoFilePath = gui.getVideoPath().getText();
+        String videoOutputPath = gui.getOutputPath().getText();
+        String crfOption = (String) gui.getCrfComboBox().getSelectedItem();
 
         // check if selected outputname already exists in selected outputfolder
         String checkFilename = gui.getOutputName().getText();
         Path checkFilepath = Paths.get(videoOutputPath, checkFilename);
-        if (Files.exists(checkFilepath)){
-            JOptionPane.showMessageDialog(gui.getMainframe(), "Sorry, but the chosen filename already exists. Please pick a different name.","File already exists", JOptionPane.WARNING_MESSAGE);
-            }
-        else {
-        // create and run process
-            ProcessBuilder pb = new ProcessBuilder(command.split(" "));
+        if (Files.exists(checkFilepath)) {
+            JOptionPane.showMessageDialog(gui.getMainframe(),
+                    "Sorry, but the chosen filename already exists. Please pick a different name.",
+                    "File already exists", JOptionPane.WARNING_MESSAGE);
+        } else {
+            // create and run process
+            ProcessBuilder pb = new ProcessBuilder("ffmpeg", "-i", videoFilePath, "-vcodec", "libx264", "-crf",
+                    crfOption, checkFilepath.toString());
             pb.redirectErrorStream(true);
             try {
                 process = pb.start();
 
                 BufferedReader reader = new BufferedReader(new InputStreamReader(process.getInputStream()));
-                while (!isCancelled() && (line = reader.readLine()) != null){
+                String line;
+                while (!isCancelled() && (line = reader.readLine()) != null) {
                     System.out.println(line);
                     gui.getCmdArea().append(line);
                     gui.getCmdArea().setCaretPosition(gui.getCmdArea().getDocument().getLength());
