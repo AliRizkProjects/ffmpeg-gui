@@ -111,9 +111,6 @@ public class FFmpegGUI implements ActionListener {
         propArea.setText("Name: \nSize: \nLength: ");
 
         // cmd area
-        // cmdArea.setPreferredSize(new Dimension(300,100));
-        // cmdArea.setMinimumSize(new Dimension(300,100));
-        // cmdArea.setMaximumSize(new Dimension(300, 200));
         cmdArea.setBackground(mainFrame.getBackground());
         cmdArea.setEditable(true);
         cmdArea.setFont(new Font("Consolas", Font.PLAIN, 10));
@@ -121,6 +118,7 @@ public class FFmpegGUI implements ActionListener {
         cmdArea.setBackground(Color.BLACK);
         cmdArea.setLineWrap(true);
         cmdArea.setWrapStyleWord(true);
+        
         cmdScroll.setBorder(BorderFactory.createTitledBorder("Console output"));
         cmdScroll.setAlignmentX(0);
         cmdScroll.setPreferredSize(new Dimension(350, 100));
@@ -137,7 +135,6 @@ public class FFmpegGUI implements ActionListener {
         pb.setStringPainted(true);
 
         // cancel + compress button design
-
         closeButton.setPreferredSize(new Dimension(100, 40));
         compressButton.setPreferredSize(new Dimension(100, 40));
 
@@ -202,34 +199,13 @@ public class FFmpegGUI implements ActionListener {
         mainFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         mainFrame.setVisible(true);
 
-        FileDropTargetAdapter adapter = new FileDropTargetAdapter(mainFrame, outputPathTextField, videoPathTextField);
+        FileDropTargetAdapter adapter = new FileDropTargetAdapter(mainFrame, outputPathTextField, videoPathTextField, propArea);
         new DropTarget(mainFrame, adapter);
         new DropTarget(cmdArea, adapter);
         new DropTarget(videoPathTextField, adapter);
         new DropTarget(outputPathTextField, adapter);
         new DropTarget(propArea, adapter);
         new DropTarget(outputName, adapter);
-    }
-
-    // Getter Methods
-    public JFrame getMainframe() {
-        return mainFrame;
-    }
-
-    public JTextArea getCmdArea() {
-        return cmdArea;
-    }
-
-    public JTextField getOutputPathTextField() {
-        return outputPathTextField;
-    }
-
-    public JTextField getVideoPathTextField() {
-        return videoPathTextField;
-    }
-
-    public static void main(String[] args) {
-        SwingUtilities.invokeLater(() -> new FFmpegGUI());
     }
 
     @Override
@@ -282,5 +258,26 @@ public class FFmpegGUI implements ActionListener {
                     videoOutputFilename, crfOption);
             compressionWorker.execute();
         }
+    }
+
+    // Getter Methods
+    public JFrame getMainframe() {
+        return mainFrame;
+    }
+
+    public JTextArea getCmdArea() {
+        return cmdArea;
+    }
+
+    public JTextField getOutputPathTextField() {
+        return outputPathTextField;
+    }
+
+    public JTextField getVideoPathTextField() {
+        return videoPathTextField;
+    }
+
+    public static void main(String[] args) {
+        SwingUtilities.invokeLater(() -> new FFmpegGUI());
     }
 }
