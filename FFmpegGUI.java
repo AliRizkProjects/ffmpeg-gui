@@ -42,6 +42,7 @@ public class FFmpegGUI implements ActionListener {
     private JTextArea propArea;
 
     private FileNameExtensionFilter filter = new FileNameExtensionFilter("MP4 Files (*.mp4)", "mp4");
+    private FileDropTargetAdapter adapter;
     private FFmpegHandler compressionWorker;
 
     public FFmpegGUI() {
@@ -199,7 +200,7 @@ public class FFmpegGUI implements ActionListener {
         mainFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         mainFrame.setVisible(true);
 
-        FileDropTargetAdapter adapter = new FileDropTargetAdapter(mainFrame, outputPathTextField, videoPathTextField, propArea);
+        adapter = new FileDropTargetAdapter(mainFrame, outputPathTextField, videoPathTextField, propArea);
         new DropTarget(mainFrame, adapter);
         new DropTarget(cmdArea, adapter);
         new DropTarget(videoPathTextField, adapter);
