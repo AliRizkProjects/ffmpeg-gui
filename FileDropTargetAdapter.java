@@ -9,16 +9,19 @@ import java.io.File;
 import java.util.List;
 
 import javax.swing.JOptionPane;
+import javax.swing.JTextArea;
 
 public class FileDropTargetAdapter extends DropTargetAdapter {
     JFrame mainFrame;
     JTextField outputPathTextField;
     JTextField videoPathTextField;
+    JTextArea propArea;
 
-    public FileDropTargetAdapter(JFrame mainFrame, JTextField outputPathTextField, JTextField videoPathTextField) {
+    public FileDropTargetAdapter(JFrame mainFrame, JTextField outputPathTextField, JTextField videoPathTextField, JTextArea propArea) {
         this.mainFrame = mainFrame;
         this.outputPathTextField = outputPathTextField;
         this.videoPathTextField = videoPathTextField;
+        this.propArea = propArea;
     }
 
     public void drop(DropTargetDropEvent event) {
@@ -40,7 +43,8 @@ public class FileDropTargetAdapter extends DropTargetAdapter {
                             String droppedFilePath = droppedFile.getAbsolutePath();
                             videoPathTextField.setText(droppedFilePath);
                             File parentDirectory = droppedFile.getParentFile();
-                            new VideoStats(droppedFile.getAbsolutePath());
+                            VideoStats stats = new VideoStats(droppedFilePath);
+                            propArea.setText(stats.getDisplayText());
                             if (parentDirectory != null) {
                                 outputPathTextField.setText(parentDirectory.getAbsolutePath());
                             }
