@@ -7,14 +7,14 @@ import java.nio.file.Paths;
 import javax.swing.JOptionPane;
 import javax.swing.SwingWorker;
 
-public class FFmpegHandler extends SwingWorker<Void, String>{
+public class FFmpegHandler extends SwingWorker<Void, String> {
     FFmpegGUI gui;
 
     public FFmpegHandler(FFmpegGUI gui) {
         this.gui = gui;
     }
-     
-    protected Void doInBackground() throws Exception{
+
+    protected Void doInBackground() throws Exception {
         Process process = null;
         
         String videoFilePath = gui.getVideoPathTextField().getText();
@@ -44,7 +44,7 @@ public class FFmpegHandler extends SwingWorker<Void, String>{
                     gui.getCmdArea().setCaretPosition(gui.getCmdArea().getDocument().getLength());
                 }
             } finally {
-                if (isCancelled()){
+                if (isCancelled()) {
                     process.destroy();
                     gui.getCmdArea().append("\n!!!!! PROCESS STOPPED !!!!!");
                     gui.getCmdArea().setCaretPosition(gui.getCmdArea().getDocument().getLength());
@@ -54,4 +54,3 @@ public class FFmpegHandler extends SwingWorker<Void, String>{
         return null;
     }
 }
-

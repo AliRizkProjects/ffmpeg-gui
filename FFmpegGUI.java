@@ -6,7 +6,7 @@ import java.awt.dnd.DropTarget;
 public class FFmpegGUI {
 
     private JFrame mainFrame;
-    
+
     private JPanel bottomPanel;
     private JPanel topPanel;
     private JPanel leftPanel;
@@ -25,14 +25,14 @@ public class FFmpegGUI {
     private JLabel pathLabel;
     private JLabel compressionLabel;
     private JLabel outputLabel;
-    
+
     private JFileChooser fileChooser;
     private JFileChooser folderChooser;
     
     private JTextField videoPathTextField;
     private JTextField outputPathTextField;
     private JTextField outputName;
-    
+
     private JScrollPane cmdScroll;
     private JTextArea cmdArea;
     private JTextArea propArea;
@@ -85,7 +85,7 @@ public class FFmpegGUI {
         outputPathTextField.setAlignmentX(1);
 
         // properties area
-        
+
         propArea.setPreferredSize(new Dimension(300, 80));
         propArea.setMinimumSize(new Dimension(300, 80));
         propArea.setMaximumSize(new Dimension(300, 80));
@@ -108,23 +108,23 @@ public class FFmpegGUI {
         cmdArea.setWrapStyleWord(true);
         cmdScroll.setBorder(BorderFactory.createTitledBorder("Console output"));
         cmdScroll.setAlignmentX(0);
-        cmdScroll.setPreferredSize(new Dimension(350,100));
-        cmdScroll.setMinimumSize(new Dimension(350,100));
+        cmdScroll.setPreferredSize(new Dimension(350, 100));
+        cmdScroll.setMinimumSize(new Dimension(350, 100));
         cmdScroll.setMaximumSize(new Dimension(500, 300));
         cmdScroll.setBackground(mainFrame.getBackground());
 
         // progress bar
         pb.setMinimumSize(new Dimension(350, 25));
-        pb.setPreferredSize(new Dimension(350,25));
-        pb.setMaximumSize(new Dimension(350,25));
+        pb.setPreferredSize(new Dimension(350, 25));
+        pb.setMaximumSize(new Dimension(350, 25));
         pb.setAlignmentX(0);
         pb.setValue(0);
         pb.setStringPainted(true);
-  
+
         // cancel + compress button design
 
-        closeButton.setPreferredSize(new Dimension(100,40));
-        compressButton.setPreferredSize(new Dimension(100,40));
+        closeButton.setPreferredSize(new Dimension(100, 40));
+        compressButton.setPreferredSize(new Dimension(100, 40));
 
         // dropdown menu crf value
         outputLabel.setAlignmentX(1);
@@ -143,9 +143,8 @@ public class FFmpegGUI {
 
         outputName.setText("output.mp4");
         outputName.setFont(new Font("Arial", Font.PLAIN, 14));
-        outputName.setMaximumSize(new Dimension(300,18));
+        outputName.setMaximumSize(new Dimension(300, 18));
 
-        
         // panels
         bottomPanel.setLayout(new BoxLayout(bottomPanel, BoxLayout.LINE_AXIS));
         bottomPanel.add(compressButton);
@@ -154,7 +153,7 @@ public class FFmpegGUI {
         bottomPanel.add(closeButton);
         bottomPanel.setBorder(new EmptyBorder(5, 5, 5, 5));
 
-        topPanel.setPreferredSize(new Dimension(50,30));
+        topPanel.setPreferredSize(new Dimension(50, 30));
         topPanel.add(pathLabel, BorderLayout.WEST);
         topPanel.add(browseButton, BorderLayout.EAST);
         topPanel.add(videoPathTextField);
@@ -204,7 +203,7 @@ public class FFmpegGUI {
     public JButton getCloseButton() {
         return closeButton;
     }
-    
+
     public JButton getStopButton() {
         return stopButton;
     }
@@ -212,7 +211,8 @@ public class FFmpegGUI {
     public JButton getBrowseButton() {
         return browseButton;
     }
-    public JButton getOutputButton(){
+
+    public JButton getOutputButton() {
         return outputButton;
     }
 
@@ -222,28 +222,35 @@ public class FFmpegGUI {
     public JTextField getOutputPathTextField(){
         return outputPathTextField;
     }
-    public JFrame getMainframe(){
+
+    public JFrame getMainframe() {
         return mainFrame;
     }
-    public JFileChooser getFileChooser(){
+
+    public JFileChooser getFileChooser() {
         return fileChooser;
     }
-    public JFileChooser getFolderChooser(){
+
+    public JFileChooser getFolderChooser() {
         return folderChooser;
     }
-    public JTextArea getCmdArea(){
+
+    public JTextArea getCmdArea() {
         return cmdArea;
     }
-    public JTextArea getPropArea(){
+
+    public JTextArea getPropArea() {
         return propArea;
     }
-    public JProgressBar getProgressBar(){
+
+    public JProgressBar getProgressBar() {
         return pb;
     }
     public JComboBox<String> getCrfComboBox(){
         return crfComboBox;
     }
-    public JTextField getOutputName(){
+
+    public JTextField getOutputName() {
         return outputName;
     }
 

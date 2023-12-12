@@ -10,20 +10,20 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class VideoStats {
-    public VideoStats(FFmpegGUI gui, String inputFilePath){
-        
+    public VideoStats(FFmpegGUI gui, String inputFilePath) {
+
         Path path = Paths.get(inputFilePath);
 
         try {
             String fileSize = getFileSize(inputFilePath);
             String fileName = path.getFileName().toString();
             String videoLength = getVideoDuration(inputFilePath);
-            gui.getPropArea().setText("Name: "+fileName+ "\nSize: "+fileSize+"\nLength: "+ videoLength+"sec");
-        }catch (IOException e) {
+            gui.getPropArea().setText("Name: " + fileName + "\nSize: " + fileSize + "\nLength: " + videoLength + "sec");
+        } catch (IOException e) {
             e.printStackTrace();
         }
     }
-    
+
     private static String getFileSize(String inputFilePath) throws IOException {
         Path path = Paths.get(inputFilePath);
 
