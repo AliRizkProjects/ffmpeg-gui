@@ -32,7 +32,7 @@ public class FFmpegGUI implements ActionListener {
 
     private JFileChooser fileChooser;
     private JFileChooser folderChooser;
-    
+
     private JTextField videoPathTextField;
     private JTextField outputPathTextField;
     private JTextField outputName;
@@ -51,7 +51,7 @@ public class FFmpegGUI implements ActionListener {
         fileChooser = new JFileChooser();
         folderChooser = new JFileChooser();
 
-        String[] crfValues = {"20", "24", "28", "32", "36"};
+        String[] crfValues = { "20", "24", "28", "32", "36" };
         crfComboBox = new JComboBox<>(crfValues);
 
         // Panel
@@ -60,7 +60,7 @@ public class FFmpegGUI implements ActionListener {
         leftPanel = new JPanel();
         bottomPanel = new JPanel();
         rightPanel = new JPanel();
-        
+
         // Buttons
         browseButton = new JButton("Browse...");
         closeButton = new JButton("Close");
@@ -96,7 +96,7 @@ public class FFmpegGUI implements ActionListener {
         videoPathTextField.setFont(new Font("Arial", Font.PLAIN, 14));
         outputPathTextField.setEditable(false);
         outputPathTextField.setFont(new Font("Arial", Font.PLAIN, 14));
-        outputPathTextField.setMaximumSize(new Dimension(300,18));
+        outputPathTextField.setMaximumSize(new Dimension(300, 18));
         outputPathTextField.setAlignmentX(1);
 
         // properties area
@@ -150,7 +150,8 @@ public class FFmpegGUI implements ActionListener {
         crfComboBox.setMinimumSize(new Dimension(50, 25));
         crfComboBox.setMaximumSize(new Dimension(50, 25));
         crfComboBox.setPreferredSize(new Dimension(50, 25));
-        crfComboBox.setToolTipText("<html>Adjust the CRF (Constant Rate Factor) value for compression<br/>Higher values result in stronger compression<br/>You also have the option to set this value manually</html>");
+        crfComboBox.setToolTipText(
+                "<html>Adjust the CRF (Constant Rate Factor) value for compression<br/>Higher values result in stronger compression<br/>You also have the option to set this value manually</html>");
         crfComboBox.setBorder(new EmptyBorder(0, 0, 5, 0));
         crfComboBox.setEditable(true);
 

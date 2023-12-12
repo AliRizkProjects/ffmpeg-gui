@@ -62,26 +62,26 @@ public class VideoStats {
             }
             process.waitFor();
 
-        while ((line = reader.readLine()) != null) {
-            durationBuilder.append(line);
-        }
-        process.waitFor();
-        
-        // get duration of video via pattern matching
-        String pattern = "duration=([\\d.]+)";
-        Pattern regex = Pattern.compile(pattern);
-        String duration = durationBuilder.toString();
-        Matcher matcher = regex.matcher(duration);
+            while ((line = reader.readLine()) != null) {
+                durationBuilder.append(line);
+            }
+            process.waitFor();
 
-        if (matcher.find()){
-            duration = matcher.group(1);
-            double formattedDuration = Double.parseDouble(duration);
-            duration = String.format("%.2f", formattedDuration);
-            return duration;
-        }
+            // get duration of video via pattern matching
+            String pattern = "duration=([\\d.]+)";
+            Pattern regex = Pattern.compile(pattern);
+            String duration = durationBuilder.toString();
+            Matcher matcher = regex.matcher(duration);
+
+            if (matcher.find()) {
+                duration = matcher.group(1);
+                double formattedDuration = Double.parseDouble(duration);
+                duration = String.format("%.2f", formattedDuration);
+                return duration;
+            }
         } catch (IOException | InterruptedException e) {
-        e.printStackTrace();
+            e.printStackTrace();
         }
-    return null;
+        return null;
     }
 }
