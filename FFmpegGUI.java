@@ -201,12 +201,13 @@ public class FFmpegGUI implements ActionListener {
         mainFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         mainFrame.setVisible(true);
 
-        new DropTarget(mainFrame, new FileDropTargetAdapter(mainFrame, outputPathTextField, videoPathTextField));
-        new DropTarget(cmdArea, new FileDropTargetAdapter(mainFrame, outputPathTextField, videoPathTextField));
-        new DropTarget(videoPathTextField, new FileDropTargetAdapter(mainFrame, outputPathTextField, videoPathTextField));
-        new DropTarget(outputPathTextField, new FileDropTargetAdapter(mainFrame, outputPathTextField, videoPathTextField));
-        new DropTarget(propArea, new FileDropTargetAdapter(mainFrame, outputPathTextField, videoPathTextField));
-        new DropTarget(outputName, new FileDropTargetAdapter(mainFrame, outputPathTextField, videoPathTextField));
+        FileDropTargetAdapter adapter = new FileDropTargetAdapter(mainFrame, outputPathTextField, videoPathTextField);
+        new DropTarget(mainFrame, adapter);
+        new DropTarget(cmdArea, adapter);
+        new DropTarget(videoPathTextField, adapter);
+        new DropTarget(outputPathTextField, adapter);
+        new DropTarget(propArea, adapter);
+        new DropTarget(outputName, adapter);
     }
 
     // Getter Methods
