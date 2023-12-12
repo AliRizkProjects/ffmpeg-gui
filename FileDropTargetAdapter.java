@@ -1,3 +1,5 @@
+import javax.swing.JFrame;
+import javax.swing.JTextField;
 import java.awt.datatransfer.DataFlavor;
 import java.awt.datatransfer.Transferable;
 import java.awt.dnd.DnDConstants;
@@ -9,9 +11,14 @@ import java.util.List;
 import javax.swing.JOptionPane;
 
 public class FileDropTargetAdapter extends DropTargetAdapter {
-        FFmpegGUI gui;
-        public FileDropTargetAdapter(FFmpegGUI gui){
-            this.gui = gui;
+        JFrame mainFrame;
+        JTextField outputPathTextField;
+        JTextField videoPathTextField;
+
+        public FileDropTargetAdapter(JFrame mainFrame, JTextField outputPathTextField, JTextField videoPathTextField){
+            this.mainFrame = mainFrame;
+            this.outputPathTextField = outputPathTextField;
+            this.videoPathTextField = videoPathTextField;
         }
 
         public void drop(DropTargetDropEvent event){
@@ -32,15 +39,15 @@ public class FileDropTargetAdapter extends DropTargetAdapter {
                             File droppedFile = files.get(0);
                             if (droppedFile.getName().toLowerCase().endsWith(".mp4")) {
                                 String droppedFilePath = droppedFile.getAbsolutePath();
-                                gui.getVideoPathTextField().setText(droppedFilePath);
+                                videoPathTextField.setText(droppedFilePath);
                                 File parentDirectory = droppedFile.getParentFile();
-                                new VideoStats(gui, droppedFile.getAbsolutePath());
+                                new VideoStats(droppedFile.getAbsolutePath());
                                 if (parentDirectory != null){
-                                    gui.getOutputPathTextField().setText(parentDirectory.getAbsolutePath());
+                                    outputPathTextField.setText(parentDirectory.getAbsolutePath());
                                 }
                             }
                             else {
-                                JOptionPane.showMessageDialog(gui.getMainframe(), "Please choose a .mp4 file", "Not a mp4 file", JOptionPane.WARNING_MESSAGE);
+                                JOptionPane.showMessageDialog(mainFrame, "Please choose a .mp4 file", "Not a mp4 file", JOptionPane.WARNING_MESSAGE);
                             }
                         }
                     }

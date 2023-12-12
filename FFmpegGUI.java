@@ -201,12 +201,12 @@ public class FFmpegGUI implements ActionListener {
         mainFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         mainFrame.setVisible(true);
 
-        new DropTarget(mainFrame, new FileDropTargetAdapter(this));
-        new DropTarget(cmdArea, new FileDropTargetAdapter(this));
-        new DropTarget(videoPathTextField, new FileDropTargetAdapter(this));
-        new DropTarget(outputPathTextField, new FileDropTargetAdapter(this));
-        new DropTarget(propArea, new FileDropTargetAdapter(this));
-        new DropTarget(outputName, new FileDropTargetAdapter(this));
+        new DropTarget(mainFrame, new FileDropTargetAdapter(mainFrame, outputPathTextField, videoPathTextField));
+        new DropTarget(cmdArea, new FileDropTargetAdapter(mainFrame, outputPathTextField, videoPathTextField));
+        new DropTarget(videoPathTextField, new FileDropTargetAdapter(mainFrame, outputPathTextField, videoPathTextField));
+        new DropTarget(outputPathTextField, new FileDropTargetAdapter(mainFrame, outputPathTextField, videoPathTextField));
+        new DropTarget(propArea, new FileDropTargetAdapter(mainFrame, outputPathTextField, videoPathTextField));
+        new DropTarget(outputName, new FileDropTargetAdapter(mainFrame, outputPathTextField, videoPathTextField));
     }
 
     // Getter Methods
@@ -216,6 +216,14 @@ public class FFmpegGUI implements ActionListener {
 
     public JTextArea getCmdArea() {
         return cmdArea;
+    }
+
+    public JTextField getOutputPathTextField() {
+        return outputPathTextField;
+    }
+
+    public JTextField getVideoPathTextField() {
+        return videoPathTextField;
     }
 
     public static void main(String[] args) {
@@ -240,13 +248,13 @@ public class FFmpegGUI implements ActionListener {
             if (file == JFileChooser.APPROVE_OPTION) {
                 File selectedFile = fileChooser.getSelectedFile();
                 if (selectedFile.getName().toLowerCase().endsWith(".mp4")) {
-                    videoPath.setText(selectedFile.getAbsolutePath());
+                    videoPathTextField.setText(selectedFile.getAbsolutePath());
                     File parentDirectory = selectedFile.getParentFile();
 
                     VideoStats stats = new VideoStats(selectedFile.getAbsolutePath());
                     propArea.setText(stats.getDisplayText());
                     if (parentDirectory != null) {
-                        outputPath.setText(parentDirectory.getAbsolutePath());
+                        outputPathTextField.setText(parentDirectory.getAbsolutePath());
                     }
                 } else {
                     JOptionPane.showMessageDialog(mainFrame, "Please choose a .mp4 file", "Wrong file",
@@ -259,13 +267,13 @@ public class FFmpegGUI implements ActionListener {
             int folder = folderChooser.showOpenDialog(getMainframe());
             if (folder == JFileChooser.APPROVE_OPTION) {
                 File selectedDirectory = folderChooser.getSelectedFile();
-                outputPath.setText(selectedDirectory.getAbsolutePath());
+                outputPathTextField.setText(selectedDirectory.getAbsolutePath());
             }
         }
         if (e.getSource() == compressButton) {
-            String videoFilePath = videoPath.getText();
-            String videoOutputPath = outputPath.getText();
-            String crfOption = (String) crfDropDown.getSelectedItem();
+            String videoFilePath = videoPathTextField.getText();
+            String videoOutputPath = outputPathTextField.getText();
+            String crfOption = (String) crfComboBox.getSelectedItem();
             String videoOutputFilename = outputName.getText();
 
             compressionWorker = new FFmpegHandler(this.mainFrame, this.cmdArea, videoFilePath, videoOutputPath,

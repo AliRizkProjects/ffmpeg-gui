@@ -56,8 +56,8 @@ public class FFmpegHandler extends SwingWorker<Void, String> {
                     if (process != null) {
                         process.destroy();
                     }
-                    gui.getCmdArea().append("\n!!!!! PROCESS STOPPED !!!!!");
-                    gui.getCmdArea().setCaretPosition(gui.getCmdArea().getDocument().getLength());
+                    cmdArea.append("\n!!!!! PROCESS STOPPED !!!!!");
+                    cmdArea.setCaretPosition(cmdArea.getDocument().getLength());
                 }
             }
         }
