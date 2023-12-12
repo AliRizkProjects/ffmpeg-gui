@@ -40,8 +40,10 @@ public class ButtonHandler implements ActionListener {
                 if (selectedFile.getName().toLowerCase().endsWith(".mp4")){
                     gui.getVideoPathTextField().setText(selectedFile.getAbsolutePath());
                     File parentDirectory = selectedFile.getParentFile();
-                    new VideoStats(gui, selectedFile.getAbsolutePath());
-                    if (parentDirectory != null){
+
+                    VideoStats stats = new VideoStats(selectedFile.getAbsolutePath());
+                    gui.getPropArea().setText(stats.getDisplayText());
+                    if (parentDirectory != null) {
                         gui.getOutputPathTextField().setText(parentDirectory.getAbsolutePath());
                     }
                 }
