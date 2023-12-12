@@ -1,5 +1,5 @@
 # ignore all following files
-*.vscode
+.vscode
 *.class
 *.jar
 *.txt

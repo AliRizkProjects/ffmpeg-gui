@@ -1,12 +1,16 @@
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
+import javax.swing.filechooser.FileNameExtensionFilter;
 import java.awt.*;
 import java.awt.dnd.DropTarget;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.io.File;
 
-public class FFmpegGUI {
+public class FFmpegGUI implements ActionListener {
 
     private JFrame mainFrame;
-    
+
     private JPanel bottomPanel;
     private JPanel topPanel;
     private JPanel leftPanel;
@@ -25,17 +29,20 @@ public class FFmpegGUI {
     private JLabel pathLabel;
     private JLabel compressionLabel;
     private JLabel outputLabel;
-    
+
     private JFileChooser fileChooser;
     private JFileChooser folderChooser;
-    
+
     private JTextField videoPathTextField;
     private JTextField outputPathTextField;
     private JTextField outputName;
-    
+
     private JScrollPane cmdScroll;
     private JTextArea cmdArea;
     private JTextArea propArea;
+
+    private FileNameExtensionFilter filter = new FileNameExtensionFilter("MP4 Files (*.mp4)", "mp4");
+    private FFmpegHandler compressionWorker;
 
     public FFmpegGUI() {
 
@@ -44,7 +51,7 @@ public class FFmpegGUI {
         fileChooser = new JFileChooser();
         folderChooser = new JFileChooser();
 
-        String[] crfValues = {"20", "24", "28", "32", "36"};
+        String[] crfValues = { "20", "24", "28", "32", "36" };
         crfComboBox = new JComboBox<>(crfValues);
 
         // Panel
@@ -53,7 +60,7 @@ public class FFmpegGUI {
         leftPanel = new JPanel();
         bottomPanel = new JPanel();
         rightPanel = new JPanel();
-        
+
         // Buttons
         browseButton = new JButton("Browse...");
         closeButton = new JButton("Close");
@@ -61,6 +68,14 @@ public class FFmpegGUI {
         compressButton = new JButton("Compress");
         outputButton = new JButton("Choose Output Location");
         outputButton.setAlignmentX(1);
+
+        // Listeners
+        closeButton.addActionListener(this);
+        stopButton.addActionListener(this);
+        browseButton.addActionListener(this);
+        compressButton.addActionListener(this);
+        outputButton.addActionListener(this);
+        fileChooser.setFileFilter(filter);
 
         // Texts
         videoPathTextField = new JTextField();
@@ -81,11 +96,11 @@ public class FFmpegGUI {
         videoPathTextField.setFont(new Font("Arial", Font.PLAIN, 14));
         outputPathTextField.setEditable(false);
         outputPathTextField.setFont(new Font("Arial", Font.PLAIN, 14));
-        outputPathTextField.setMaximumSize(new Dimension(300,18));
+        outputPathTextField.setMaximumSize(new Dimension(300, 18));
         outputPathTextField.setAlignmentX(1);
 
         // properties area
-        
+
         propArea.setPreferredSize(new Dimension(300, 80));
         propArea.setMinimumSize(new Dimension(300, 80));
         propArea.setMaximumSize(new Dimension(300, 80));
@@ -96,9 +111,6 @@ public class FFmpegGUI {
         propArea.setText("Name: \nSize: \nLength: ");
 
         // cmd area
-        // cmdArea.setPreferredSize(new Dimension(300,100));
-        // cmdArea.setMinimumSize(new Dimension(300,100));
-        // cmdArea.setMaximumSize(new Dimension(300, 200));
         cmdArea.setBackground(mainFrame.getBackground());
         cmdArea.setEditable(true);
         cmdArea.setFont(new Font("Consolas", Font.PLAIN, 10));
@@ -106,25 +118,25 @@ public class FFmpegGUI {
         cmdArea.setBackground(Color.BLACK);
         cmdArea.setLineWrap(true);
         cmdArea.setWrapStyleWord(true);
+        
         cmdScroll.setBorder(BorderFactory.createTitledBorder("Console output"));
         cmdScroll.setAlignmentX(0);
-        cmdScroll.setPreferredSize(new Dimension(350,100));
-        cmdScroll.setMinimumSize(new Dimension(350,100));
+        cmdScroll.setPreferredSize(new Dimension(350, 100));
+        cmdScroll.setMinimumSize(new Dimension(350, 100));
         cmdScroll.setMaximumSize(new Dimension(500, 300));
         cmdScroll.setBackground(mainFrame.getBackground());
 
         // progress bar
         pb.setMinimumSize(new Dimension(350, 25));
-        pb.setPreferredSize(new Dimension(350,25));
-        pb.setMaximumSize(new Dimension(350,25));
+        pb.setPreferredSize(new Dimension(350, 25));
+        pb.setMaximumSize(new Dimension(350, 25));
         pb.setAlignmentX(0);
         pb.setValue(0);
         pb.setStringPainted(true);
-  
-        // cancel + compress button design
 
-        closeButton.setPreferredSize(new Dimension(100,40));
-        compressButton.setPreferredSize(new Dimension(100,40));
+        // cancel + compress button design
+        closeButton.setPreferredSize(new Dimension(100, 40));
+        compressButton.setPreferredSize(new Dimension(100, 40));
 
         // dropdown menu crf value
         outputLabel.setAlignmentX(1);
@@ -135,7 +147,8 @@ public class FFmpegGUI {
         crfComboBox.setMinimumSize(new Dimension(50, 25));
         crfComboBox.setMaximumSize(new Dimension(50, 25));
         crfComboBox.setPreferredSize(new Dimension(50, 25));
-        crfComboBox.setToolTipText("<html>Adjust the CRF (Constant Rate Factor) value for compression<br/>Higher values result in stronger compression<br/>You also have the option to set this value manually</html>");
+        crfComboBox.setToolTipText(
+                "<html>Adjust the CRF (Constant Rate Factor) value for compression<br/>Higher values result in stronger compression<br/>You also have the option to set this value manually</html>");
         crfComboBox.setBorder(new EmptyBorder(0, 0, 5, 0));
         crfComboBox.setEditable(true);
 
@@ -143,9 +156,8 @@ public class FFmpegGUI {
 
         outputName.setText("output.mp4");
         outputName.setFont(new Font("Arial", Font.PLAIN, 14));
-        outputName.setMaximumSize(new Dimension(300,18));
+        outputName.setMaximumSize(new Dimension(300, 18));
 
-        
         // panels
         bottomPanel.setLayout(new BoxLayout(bottomPanel, BoxLayout.LINE_AXIS));
         bottomPanel.add(compressButton);
@@ -154,7 +166,7 @@ public class FFmpegGUI {
         bottomPanel.add(closeButton);
         bottomPanel.setBorder(new EmptyBorder(5, 5, 5, 5));
 
-        topPanel.setPreferredSize(new Dimension(50,30));
+        topPanel.setPreferredSize(new Dimension(50, 30));
         topPanel.add(pathLabel, BorderLayout.WEST);
         topPanel.add(browseButton, BorderLayout.EAST);
         topPanel.add(videoPathTextField);
@@ -187,64 +199,82 @@ public class FFmpegGUI {
         mainFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         mainFrame.setVisible(true);
 
-        new ButtonHandler(this);
-        new DropTarget(mainFrame, new FileDropTargetAdapter(this));
-        new DropTarget(cmdArea, new FileDropTargetAdapter(this));
-        new DropTarget(videoPathTextField, new FileDropTargetAdapter(this));
-        new DropTarget(outputPathTextField, new FileDropTargetAdapter(this));
-        new DropTarget(propArea, new FileDropTargetAdapter(this));
-        new DropTarget(outputName, new FileDropTargetAdapter(this));
+        FileDropTargetAdapter adapter = new FileDropTargetAdapter(mainFrame, outputPathTextField, videoPathTextField, propArea);
+        new DropTarget(mainFrame, adapter);
+        new DropTarget(cmdArea, adapter);
+        new DropTarget(videoPathTextField, adapter);
+        new DropTarget(outputPathTextField, adapter);
+        new DropTarget(propArea, adapter);
+        new DropTarget(outputName, adapter);
+    }
+
+    @Override
+    public void actionPerformed(ActionEvent e) {
+        if (e.getSource() == closeButton) {
+            if (compressionWorker != null) {
+                compressionWorker.cancel(true);
+            }
+            mainFrame.dispose();
+        }
+        if (e.getSource() == stopButton) {
+            if (compressionWorker != null) {
+                compressionWorker.cancel(true);
+            }
+        }
+        if (e.getSource() == browseButton) {
+            int file = fileChooser.showOpenDialog(mainFrame);
+            if (file == JFileChooser.APPROVE_OPTION) {
+                File selectedFile = fileChooser.getSelectedFile();
+                if (selectedFile.getName().toLowerCase().endsWith(".mp4")) {
+                    videoPathTextField.setText(selectedFile.getAbsolutePath());
+                    File parentDirectory = selectedFile.getParentFile();
+
+                    VideoStats stats = new VideoStats(selectedFile.getAbsolutePath());
+                    propArea.setText(stats.getDisplayText());
+                    if (parentDirectory != null) {
+                        outputPathTextField.setText(parentDirectory.getAbsolutePath());
+                    }
+                } else {
+                    JOptionPane.showMessageDialog(mainFrame, "Please choose a .mp4 file", "Wrong file",
+                            JOptionPane.WARNING_MESSAGE);
+                }
+            }
+        }
+        if (e.getSource() == outputButton) {
+            folderChooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
+            int folder = folderChooser.showOpenDialog(getMainframe());
+            if (folder == JFileChooser.APPROVE_OPTION) {
+                File selectedDirectory = folderChooser.getSelectedFile();
+                outputPathTextField.setText(selectedDirectory.getAbsolutePath());
+            }
+        }
+        if (e.getSource() == compressButton) {
+            String videoFilePath = videoPathTextField.getText();
+            String videoOutputPath = outputPathTextField.getText();
+            String crfOption = (String) crfComboBox.getSelectedItem();
+            String videoOutputFilename = outputName.getText();
+
+            compressionWorker = new FFmpegHandler(this.mainFrame, this.cmdArea, videoFilePath, videoOutputPath,
+                    videoOutputFilename, crfOption);
+            compressionWorker.execute();
+        }
     }
 
     // Getter Methods
-    public JButton getCompressButton() {
-        return compressButton;
+    public JFrame getMainframe() {
+        return mainFrame;
     }
 
-    public JButton getCloseButton() {
-        return closeButton;
-    }
-    
-    public JButton getStopButton() {
-        return stopButton;
+    public JTextArea getCmdArea() {
+        return cmdArea;
     }
 
-    public JButton getBrowseButton() {
-        return browseButton;
-    }
-    public JButton getOutputButton(){
-        return outputButton;
+    public JTextField getOutputPathTextField() {
+        return outputPathTextField;
     }
 
     public JTextField getVideoPathTextField() {
         return videoPathTextField;
-    }
-    public JTextField getOutputPathTextField(){
-        return outputPathTextField;
-    }
-    public JFrame getMainframe(){
-        return mainFrame;
-    }
-    public JFileChooser getFileChooser(){
-        return fileChooser;
-    }
-    public JFileChooser getFolderChooser(){
-        return folderChooser;
-    }
-    public JTextArea getCmdArea(){
-        return cmdArea;
-    }
-    public JTextArea getPropArea(){
-        return propArea;
-    }
-    public JProgressBar getProgressBar(){
-        return pb;
-    }
-    public JComboBox<String> getCrfComboBox(){
-        return crfComboBox;
-    }
-    public JTextField getOutputName(){
-        return outputName;
     }
 
     public static void main(String[] args) {
