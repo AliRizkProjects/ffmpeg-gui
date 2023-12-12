@@ -1,8 +1,10 @@
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
+
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -33,13 +35,12 @@ public class FFmpegHandler extends SwingWorker<Void, String> {
         this.crfOption = crfOption;
         this.progressBar = progresBar;
         this.videoStats = new VideoStats(videoFilePath);
-
-        double videoDuration = Double.parseDouble(videoStats.getVideoDuration(videoFilePath));
     }
 
     protected Void doInBackground() throws Exception {
         // check if selected outputname already exists in selected outputfolder
         Path videoOutputFilepath = Paths.get(videoOutputPath, videoOutputFilename);
+        double videoFrames = Double.parseDouble(videoStats.getVideoFrames(videoFilePath));
         if (Files.exists(videoOutputFilepath)) {
             JOptionPane.showMessageDialog(mainFrame,
                     "Sorry, but the chosen filename already exists. Please pick a different name.",
@@ -62,20 +63,16 @@ public class FFmpegHandler extends SwingWorker<Void, String> {
                     cmdArea.setCaretPosition(cmdArea.getDocument().getLength());
 
                     // forward cmd output to the progressbar
-                    // get processed time via pattern matching
-                    String pattern = "time=(\\d{2}):(\\d{2}):(\\d{2}.\\d{2})";
+                    // get processed frames via pattern matching
+                    String pattern = "frame=\\s*(\\d{1,6})";
                     Pattern regex = Pattern.compile(pattern);
-                    String time = line.toString();
-                    Matcher matcher = regex.matcher(time);
+                    String processedFrames = line.toString();
+                    Matcher matcher = regex.matcher(processedFrames);
             
                     if (matcher.find()) {
-                        int processedHours = Integer.parseInt(matcher.group(1));
-                        int processedMinutes = Integer.parseInt(matcher.group(2));
-                        double processedSeconds = Double.parseDouble(matcher.group(3));
-                        double processedTime = processedHours * 3600 + processedMinutes * 60 + processedSeconds; 
-                        double progress = processedTime / videoDuration;
-                        progressBar.setValue(processedMinutes);
-                        System.out.println(processedTime);
+                        int frame = Integer.parseInt(matcher.group(1));
+                        double progress = (frame / videoFrames) * 100;
+                        progressBar.setValue((int) progress);
                     }
                 }
             } finally {

@@ -78,4 +78,31 @@ public class VideoStats {
         }
         return null;
     }
+
+    public String getVideoFrames(String inputFilePath) {
+        //ffprobe -v error -select_streams v:0 -show_entries stream=nb_frames -of default=nokey=1:noprint_wrappers=1
+        try {
+            ProcessBuilder processBuilder = new ProcessBuilder("ffprobe", "-v", "error", "-select_streams",
+                    "v:0", "-show_entries", "stream=nb_frames", "-of", "default=nokey=1:noprint_wrappers=1", inputFilePath);
+            processBuilder.redirectErrorStream(true);
+            
+            Process process = processBuilder.start();
+
+            BufferedReader reader = new BufferedReader(new InputStreamReader(process.getInputStream()));
+
+            String line;
+            StringBuilder frameBuilder = new StringBuilder();
+            while ((line = reader.readLine()) != null) {
+                frameBuilder.append(line);
+            }
+            process.waitFor();
+
+            String frames = frameBuilder.toString();
+
+            return frames;
+        } catch (IOException | InterruptedException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
 }
