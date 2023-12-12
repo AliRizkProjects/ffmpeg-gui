@@ -6,6 +6,7 @@ import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import java.util.Locale;
 
 public class VideoStats {
     String inputFilePath;
@@ -60,11 +61,6 @@ public class VideoStats {
             }
             process.waitFor();
 
-            while ((line = reader.readLine()) != null) {
-                durationBuilder.append(line);
-            }
-            process.waitFor();
-
             // get duration of video via pattern matching
             String pattern = "duration=([\\d.]+)";
             Pattern regex = Pattern.compile(pattern);
@@ -74,7 +70,7 @@ public class VideoStats {
             if (matcher.find()) {
                 duration = matcher.group(1);
                 double formattedDuration = Double.parseDouble(duration);
-                duration = String.format("%.2f", formattedDuration);
+                duration = String.format(Locale.US, "%.2f", formattedDuration);
                 return duration;
             }
         } catch (IOException | InterruptedException e) {

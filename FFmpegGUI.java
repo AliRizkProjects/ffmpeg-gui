@@ -24,7 +24,7 @@ public class FFmpegGUI implements ActionListener {
 
     private JComboBox<String> crfComboBox;
 
-    private JProgressBar pb;
+    private JProgressBar progressBar;
 
     private JLabel pathLabel;
     private JLabel compressionLabel;
@@ -88,7 +88,7 @@ public class FFmpegGUI implements ActionListener {
         compressionLabel = new JLabel("Compression Intensity (CRF Value)");
         outputLabel = new JLabel("Set Output Name");
 
-        pb = new JProgressBar();
+        progressBar = new JProgressBar();
 
         // design Textfields
         pathLabel.setLabelFor(videoPathTextField);
@@ -127,12 +127,12 @@ public class FFmpegGUI implements ActionListener {
         cmdScroll.setBackground(mainFrame.getBackground());
 
         // progress bar
-        pb.setMinimumSize(new Dimension(350, 25));
-        pb.setPreferredSize(new Dimension(350, 25));
-        pb.setMaximumSize(new Dimension(350, 25));
-        pb.setAlignmentX(0);
-        pb.setValue(0);
-        pb.setStringPainted(true);
+        progressBar.setMinimumSize(new Dimension(350, 25));
+        progressBar.setPreferredSize(new Dimension(350, 25));
+        progressBar.setMaximumSize(new Dimension(350, 25));
+        progressBar.setAlignmentX(0);
+        progressBar.setValue(0);
+        progressBar.setStringPainted(true);
 
         // cancel + compress button design
         closeButton.setPreferredSize(new Dimension(100, 40));
@@ -175,7 +175,7 @@ public class FFmpegGUI implements ActionListener {
         leftPanel.setLayout(new BoxLayout(leftPanel, BoxLayout.Y_AXIS));
         leftPanel.add(propArea);
         leftPanel.add(cmdScroll);
-        leftPanel.add(pb);
+        leftPanel.add(progressBar);
 
         rightPanel.setLayout(new BoxLayout(rightPanel, BoxLayout.Y_AXIS));
         rightPanel.add(compressionLabel);
@@ -255,7 +255,7 @@ public class FFmpegGUI implements ActionListener {
             String videoOutputFilename = outputName.getText();
 
             compressionWorker = new FFmpegHandler(this.mainFrame, this.cmdArea, videoFilePath, videoOutputPath,
-                    videoOutputFilename, crfOption);
+                    videoOutputFilename, crfOption, progressBar);
             compressionWorker.execute();
         }
     }
